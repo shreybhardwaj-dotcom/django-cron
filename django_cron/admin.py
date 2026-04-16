@@ -29,6 +29,7 @@ class DurationFilter(admin.SimpleListFilter):
             return queryset.filter(end_time__gt=F('start_time') + timedelta(hours=1))
         if self.value() == 'gt_day':
             return queryset.filter(end_time__gt=F('start_time') + timedelta(days=1))
+        return queryset
 
 
 class CronJobLogAdmin(admin.ModelAdmin):
