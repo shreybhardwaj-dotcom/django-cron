@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Index
 
 
 class CronJobLog(models.Model):
@@ -16,13 +17,13 @@ class CronJobLog(models.Model):
     # Jobs that run every X minutes, have this field empty.
     ran_at_time = models.TimeField(null=True, blank=True, db_index=True, editable=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s (%s)' % (self.code, 'Success' if self.is_success else 'Fail')
 
     class Meta:
-        index_together = [
-            ('code', 'is_success', 'ran_at_time'),
-            ('code', 'start_time', 'ran_at_time'),
-            ('code', 'start_time')  # useful when finding latest run (order by start_time) of cron
+        indexes = [
+            Index(fields=['code', 'is_success', 'ran_at_time']),
+            Index(fields=['code', 'start_time', 'ran_at_time']),
+            Index(fields=['code', 'start_time']),  # useful when finding latest run (order by start_time) of cron
         ]
         app_label = 'django_cron'

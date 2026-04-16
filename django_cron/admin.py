@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from django.contrib import admin
 from django.db.models import F
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from django_cron.models import CronJobLog
 from django_cron.helpers import humanize_duration
@@ -20,7 +20,7 @@ class DurationFilter(admin.SimpleListFilter):
             ('gt_day', _('> 1 day')),
         )
 
-    def queryset(self, request, queryset):
+    def get_queryset(self, request, queryset):
         if self.value() == 'lte_minute':
             return queryset.filter(end_time__lte=F('start_time') + timedelta(minutes=1))
         if self.value() == 'gt_minute':
