@@ -20,7 +20,7 @@ class DurationFilter(admin.SimpleListFilter):
             ('gt_day', _('> 1 day')),
         )
 
-    def get_queryset(self, request, queryset):
+    def queryset(self, request, queryset):
         if self.value() == 'lte_minute':
             return queryset.filter(end_time__lte=F('start_time') + timedelta(minutes=1))
         if self.value() == 'gt_minute':
